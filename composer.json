@@ -1,0 +1,15 @@
+{
+    "name": "webtorque/examinator",
+    "description": "A SilverStripe module for conducting online exams, this is a first draft and pretty rough, so use at your own peril",
+    "type": "silverstripe-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Conrad",
+            "email": "conrad@webtorque.co.nz"
+        }
+    ],
+    "require": {
+        "silverstripe/framework": "^3.1"
+    }
+}
