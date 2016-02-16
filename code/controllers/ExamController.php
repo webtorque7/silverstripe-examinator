@@ -26,7 +26,7 @@ class ExamController extends \Controller
     {
         if ($code = $this->request->param('ID')) {
             if ($exam = Exam::byCode($this->request->param('ID'))) {
-                return $this->customise(['Exam' => $exam])->renderWith('Exam');
+                return $this->customise(array('Exam' => $exam))->renderWith('Exam');
             } else {
                 die('Couldn\'t find exam');
             }
@@ -44,21 +44,21 @@ class ExamController extends \Controller
     {
         if ($code = $this->request->param('ID')) {
             if ($exam = Exam::byCode($this->request->param('ID'))) {
-                $return = [
+                $return = array(
                     'Code' => $exam->Code,
                     'Duration' => $exam->Duration,
                     'Instructions' => $exam->dbObject('Instructions')->forTemplate(),
-                    'Questions' => [],
+                    'Questions' => array(),
                     'SaveURL' => '/exam/savequestion',
                     'StartURL' => '/exam/startexam/' . $exam->Code,
                     'FinishURL' => '/exam/finishexam/' . $exam->Code
-                ];
+                );
 
                 foreach ($exam->Questions() as $question) {
-                    $return['Questions'][] = [
+                    $return['Questions'][] = array(
                         'ID' => $question->ID,
                         'Question' => $question->Question
-                    ];
+                    );
                 }
 
                 return $this->respond($return);
@@ -82,9 +82,9 @@ class ExamController extends \Controller
                 $submission->write();
 
 
-                return $this->respond([
+                return $this->respond(array(
                     'SubmissionID' => $submission->ID
-                ]);
+                ));
             }
         }
     }
@@ -100,9 +100,9 @@ class ExamController extends \Controller
             $submission->FinishTime = \SS_Datetime::now()->getValue();
             $submission->write();
 
-            return $this->respond([
+            return $this->respond(array(
                 'Finished' => true
-            ]);
+            ));
         }
     }
 
@@ -122,10 +122,10 @@ class ExamController extends \Controller
         $activity = $this->getRequest()->postVar('DodgyActivity');
 
         if ($submissionID && $questionID) {
-            $answer = ExamAnswer::get()->filter([
+            $answer = ExamAnswer::get()->filter(array(
                 'SubmissionID' => $submissionID,
                 'QuestionID' => $questionID
-            ])->first();
+            ))->first();
 
             if (!$answer) {
                 $answer = new ExamAnswer();
@@ -138,15 +138,15 @@ class ExamController extends \Controller
             $answer->Answer = $answerText;
             $answer->write();
 
-            return $this->respond([
+            return $this->respond(array(
                 'Status' => 1,
-            ]);
+            ));
         }
 
-        return $this->respond([
+        return $this->respond(array(
             'Status' => 0,
             'Message' => 'An error has occurred saving your answer'
-        ]);
+        ));
     }
 
     /**
